@@ -9,3 +9,9 @@ jobs:
 
     steps:
       - run: echo "Always success"
+
+  hogera:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: exit 1
