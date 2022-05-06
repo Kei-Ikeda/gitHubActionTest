@@ -20,4 +20,6 @@ jobs:
       - name: create pr to master branch
         # if: contains(toJSON(github.ref), 'test')
         id: open-pr-master
-        run: echo 'test'
+        run: |
+          echo $GH_TOKEN
+          echo toJSON(github.ref)
