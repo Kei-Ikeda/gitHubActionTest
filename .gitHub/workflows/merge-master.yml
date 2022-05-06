@@ -22,4 +22,3 @@ jobs:
         id: open-pr-master
         run: |
           echo "${{ env.GH_TOKEN }}"
-          echo toJSON(github.ref)
