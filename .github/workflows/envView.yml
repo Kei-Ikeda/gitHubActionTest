@@ -1,0 +1,37 @@
+name: merge into master from product
+
+on:
+  workflow_dispatch:
+
+jobs:
+  merge-into-master:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # auto created token
+      GH_TOKEN: ${{ secrets.USER_TOKEN }}
+
+    steps:
+      - name: check out branch
+        uses: actions/checkout@v2
+
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
+      - name: Dump job context
+        run: echo '${{ toJSON(job) }}'
+      - name: Dump steps context
+        run: echo '${{ toJSON(steps) }}'
+      - name: Dump runner context
+        run: echo '${{ toJSON(runner) }}'
+      - name: Dump strategy context
+        run: echo '${{ toJSON(strategy) }}'
+      - name: Dump matrix context
+        run: echo '${{ toJSON(matrix) }}'
+
+      - name: DumpToken
+        run: |
+          echo "${{ env.GH_TOKEN }}"
+      - name: Dump branch
+        run: |
+          git branch
