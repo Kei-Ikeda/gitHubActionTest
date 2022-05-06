@@ -36,4 +36,4 @@ jobs:
         # -m 対象のブランチをマージする
         # ここではproductをmasterにマージする
         run: |
-          gh pr merge 1 -m
+          gh pr merge ${{steps.open-pr-test.outputs.open-pr-master}} -m
