@@ -1,4 +1,4 @@
-name: merge into master from product
+name: envView
 
 on:
   workflow_dispatch:
