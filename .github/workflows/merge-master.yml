@@ -1,0 +1,23 @@
+name: merge into master from product
+
+on:
+  workflow_dispatch:
+
+jobs:
+  merge-into-master:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # auto created token
+      # GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: check out branch
+        uses: actions/checkout@v2
+        with:
+          ref: product
+
+      - name: create pr to master branch
+        # if: contains(toJSON(github.ref), 'test')
+        id: open-pr-master
+        run: echo 'test'
