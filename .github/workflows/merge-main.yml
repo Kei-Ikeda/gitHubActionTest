@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  merge-into-master:
+  merge-into-main:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -18,22 +18,22 @@ jobs:
         # with:
         #   ref: product
 
-      - name: create pr into master from product
+      - name: create pr into main from product
         # ref を判定 ここではawsパイプラインからproductを指定される想定
         if: contains(toJSON(github.ref), 'product')
-        id: open-pr-master
+        id: open-pr-main
         # -B マージする対象ブランチ -t プルリクのタイトル -b プルリクの本文
         # ::set-output name=KEY_NAME::valueでsteps内で使用できる変数にセットする
         # ここでsetされるのは対象のプルリクURL
         # merge時のtargetとして使用する
         run: |
           git branch
-          echo "::set-output name=open-pr-master::$(gh pr create -B master -t 'auto create pr' -b 'merge into master')"
+          echo "::set-output name=open-pr-main::$(gh pr create -B main -t 'auto create pr' -b 'merge into main')"
 
       # test branch
-      - name: merge pr into master from product
+      - name: merge pr into main from product
         if: contains(toJSON(github.ref), 'product')
         # -m 対象のブランチをマージする
-        # ここではproductをmasterにマージする
+        # ここではproductをmainにマージする
         run: |
-          gh pr merge ${{steps.open-pr-test.outputs.open-pr-master}} -m
+          gh pr merge ${{steps.open-pr-test.outputs.open-pr-main}} -m
