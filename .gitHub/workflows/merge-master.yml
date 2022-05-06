@@ -27,6 +27,7 @@ jobs:
         # ここでsetされるのは対象のプルリクURL
         # merge時のtargetとして使用する
         run: |
+          echo git branch
           echo "::set-output name=open-pr-master::$(gh pr create -B master -t 'auto create pr' -b 'merge into master')"
 
       # test branch
