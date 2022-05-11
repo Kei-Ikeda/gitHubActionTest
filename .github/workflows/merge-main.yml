@@ -31,7 +31,7 @@ jobs:
 
       - name: create pr into main from product
         # ref を判定 ここではawsパイプラインからproductを指定される想定
-        if: contains(toJSON(github.ref), 'product')
+        # if: contains(toJSON(github.ref), 'product')
         id: open-pr-main
         # -B マージする対象ブランチ -t プルリクのタイトル -b プルリクの本文
         # ::set-output name=KEY_NAME::valueでsteps内で使用できる変数にセットする
