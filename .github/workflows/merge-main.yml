@@ -31,10 +31,7 @@ jobs:
 
       - name: create pr into main from product
         # ref を判定 ここではawsパイプラインからproductを指定される想定
-        # if判定不要？
-        # if: contains(toJSON(github.ref), 'product')
-        # idは不要？
-        # id: open-pr-main
+        id: open-pr-main
         # -B マージする対象ブランチ -t プルリクのタイトル -b プルリクの本文
         # ::set-output name=KEY_NAME::valueでsteps内で使用できる変数にセットする
         # ここでsetされるのは対象のプルリクURL
@@ -49,7 +46,6 @@ jobs:
 
       # test branch
       - name: merge pr into main from product
-        # if: contains(toJSON(github.ref), 'product')
         # -m 対象のブランチをマージする
         # ここではproductをmainにマージする
         run: |
