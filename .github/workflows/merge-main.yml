@@ -45,8 +45,8 @@ jobs:
         #   echo "::set-output name=open-pr-main::$(gh pr create -B main -t 'auto create pr' -b 'merge into main')"
 
       # test branch
-      - name: merge pr into main from product
-        if: contains(toJSON(github.ref), 'product')
+      # - name: merge pr into main from product
+      #   if: contains(toJSON(github.ref), 'product')
         # -m 対象のブランチをマージする
         # ここではproductをmainにマージする
         # run: |
