@@ -44,6 +44,7 @@ jobs:
         #   echo ${{ github.ref }}
         run: |
           git branch
+          echo ${{ github.ref }}
           echo "::set-output name=open-pr-main::$(gh pr create -B main -t 'auto create pr' -b 'merge into main')"
 
       # test branch
@@ -52,4 +53,6 @@ jobs:
         # -m 対象のブランチをマージする
         # ここではproductをmainにマージする
         run: |
+          echo ${{steps.open-pr-test.outputs.open-pr-main}}
+          echo ${{steps.outputs.open-pr-main}}
           gh pr merge ${{steps.open-pr-test.outputs.open-pr-main}} -m
