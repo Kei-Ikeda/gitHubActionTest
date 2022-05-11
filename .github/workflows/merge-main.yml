@@ -1,4 +1,4 @@
-name: merge into master from product
+name: merge into main from product
 
 on:
   workflow_dispatch:
