@@ -39,12 +39,15 @@ jobs:
         # merge時のtargetとして使用する
         run: |
           git branch
-          echo "::set-output name=open-pr-main::$(gh pr create -B main -t 'auto create pr' -b 'merge into main')"
+          echo ${{ github.ref }}
+        # run: |
+        #   git branch
+        #   echo "::set-output name=open-pr-main::$(gh pr create -B main -t 'auto create pr' -b 'merge into main')"
 
       # test branch
       - name: merge pr into main from product
         if: contains(toJSON(github.ref), 'product')
         # -m 対象のブランチをマージする
         # ここではproductをmainにマージする
-        run: |
-          gh pr merge ${{steps.open-pr-test.outputs.open-pr-main}} -m
+        # run: |
+        #   gh pr merge ${{steps.open-pr-test.outputs.open-pr-main}} -m
