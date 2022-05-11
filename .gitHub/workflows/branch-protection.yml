@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: waiting for success
-        run: sleep 20 echo "Always success"
+        run: sleep 20 | echo "Always success"
 
   # hogera:
   #   runs-on: ubuntu-latest
