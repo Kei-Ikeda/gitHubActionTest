@@ -1,10 +1,12 @@
-name: merge into master from product
+name: merge into main from product
 
 on:
   workflow_dispatch:
   workflow_run:
     workflows:
       - Branch protection
+    types:
+      - completed
 
 jobs:
   merge-into-main:
@@ -24,8 +26,8 @@ jobs:
       - name: check out branch
         uses: actions/checkout@v2
         # productブランチにチェックアウト
-        # with:
-        #   ref: product
+        with:
+          ref: product
 
       - name: create pr into main from product
         # ref を判定 ここではawsパイプラインからproductを指定される想定
