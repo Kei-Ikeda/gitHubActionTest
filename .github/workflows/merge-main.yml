@@ -5,6 +5,8 @@ on:
   workflow_run:
     workflows:
       - Branch protection
+    types:
+      - completed
 
 jobs:
   merge-into-main:
