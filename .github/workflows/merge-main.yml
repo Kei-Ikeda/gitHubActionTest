@@ -49,6 +49,6 @@ jobs:
         # -m 対象のブランチをマージする
         # ここではproductをmainにマージする
         run: |
-          echo ${{steps.open-pr-test.outputs.open-pr-main}}
+          echo ${{steps.open-pr-main.outputs.open-pr-main}}
           echo ${{steps.outputs.open-pr-main}}
-          gh pr merge ${{steps.open-pr-test.outputs.open-pr-main}} -m
+          gh pr merge ${{steps.open-pr-main.outputs.open-pr-main}} -m
