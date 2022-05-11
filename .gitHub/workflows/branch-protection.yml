@@ -2,16 +2,19 @@ name: Branch protection
 
 on:
   pull_request:
+    branches:
+      - 'product'
 
 jobs:
   success:
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo "Always success"
+      - name: waiting for success
+        run: sleep 20 echo "Always success"
 
-  hogera:
-    runs-on: ubuntu-latest
+  # hogera:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - run: exit 1
+  #   steps:
+  #     - run: exit 1
