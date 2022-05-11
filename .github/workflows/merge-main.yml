@@ -31,23 +31,25 @@ jobs:
 
       - name: create pr into main from product
         # ref を判定 ここではawsパイプラインからproductを指定される想定
+        # if判定不要？
         # if: contains(toJSON(github.ref), 'product')
-        id: open-pr-main
+        # idは不要？
+        # id: open-pr-main
         # -B マージする対象ブランチ -t プルリクのタイトル -b プルリクの本文
         # ::set-output name=KEY_NAME::valueでsteps内で使用できる変数にセットする
         # ここでsetされるのは対象のプルリクURL
         # merge時のtargetとして使用する
-        run: |
-          git branch
-          echo ${{ github.ref }}
         # run: |
         #   git branch
-        #   echo "::set-output name=open-pr-main::$(gh pr create -B main -t 'auto create pr' -b 'merge into main')"
+        #   echo ${{ github.ref }}
+        run: |
+          git branch
+          echo "::set-output name=open-pr-main::$(gh pr create -B main -t 'auto create pr' -b 'merge into main')"
 
-      # test branch
-      # - name: merge pr into main from product
-      #   if: contains(toJSON(github.ref), 'product')
+      test branch
+      - name: merge pr into main from product
+        # if: contains(toJSON(github.ref), 'product')
         # -m 対象のブランチをマージする
         # ここではproductをmainにマージする
-        # run: |
-        #   gh pr merge ${{steps.open-pr-test.outputs.open-pr-main}} -m
+        run: |
+          gh pr merge ${{steps.open-pr-test.outputs.open-pr-main}} -m
