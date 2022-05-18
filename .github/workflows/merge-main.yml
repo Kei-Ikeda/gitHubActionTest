@@ -53,5 +53,4 @@ jobs:
         run: |
           echo ${{steps.outputs.target-pr-url != ''}}
           echo ${{steps.open-pr-main.outputs.target-pr-url != ''}}
-          gh pr review ${{steps.open-pr-main.outputs.target-pr-url}} -a
-          gh pr merge ${{steps.open-pr-main.outputs.target-pr-url}} -m
+          gh pr merge ${{steps.open-pr-main.outputs.target-pr-url}} -m --admin
