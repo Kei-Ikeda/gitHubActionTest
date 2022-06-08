@@ -7,29 +7,38 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 300
     env:
-      # REACT_APP_CURR_ENV: production
-      # PG_USER_EMAIL: server@inter-zone.jp
-      # PG_USER_NAME: gnote-github
-      # PG_USER_SECRET: ${{ secrets.PG_USER_SECRET }}
-      # REPO: ${{ github.repository }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.PRODUCT_AWS_SECRET_ACCESS_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.PRODUCT_AWS_ACCESS_KEY_ID }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
+      ##############
+      # Checkout   #
+      ##############
       - name: Checkout
         uses: actions/checkout@v3
         with:
           ref: action
 
+      ###########################
+      # Get current date time   #
+      ###########################
       - name: Get current date time
         id: get_current_date_time
         run: |
           current_date_time=$(TZ=UTC-9 date '+%s')
           echo "::set-output name=current_date_time::$current_date_time"
 
-      - name: Create config file
+      ######################
+      #  Clear json file   #
+      ######################
+      - name: Clear json file
         run: |
           echo -e "{}" > ./frontVersioning.json
 
+      ###########################################
+      # Update updatedAt frontVersioning.json   #
+      ###########################################
       - name: Update updatedAt frontVersioning.json
         uses: jossef/action-set-json-field@v1
         with:
@@ -37,6 +46,9 @@ jobs:
           field: updatedAt
           value:  ${{ steps.get_current_date_time.outputs.current_date_time }}
 
+      ##################
+      # Commit files   #
+      ##################
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
@@ -45,30 +57,67 @@ jobs:
           git commit -m "update json" -a
           git push origin HEAD
 
-      - name: create pr into main from product
-        # ref を判定 ここではawsパイプラインからproductを指定される想定
+      ######################################
+      # Create pr into main from action    #
+      ######################################
+      - name: Create pr into main from action
         id: open-pr-main
-        # -B マージする対象ブランチ -t プルリクのタイトル -b プルリクの本文
-        # ::set-output name=KEY_NAME::valueでsteps内で使用できる変数にセットする
-        # ここでsetされるのは対象のプルリクURL
-        # merge時のtargetとして使用する
-        # run: |
-        #   git branch
-        #   echo ${{ github.ref }}
         run: |
           git branch
           echo ${{ github.ref }}
           echo "::set-output name=target-pr-url::$(gh pr create -B main -t 'auto create pr' -b 'merge into main')"
 
-      # test branch
-      - name: merge pr into main from product
-        # -m 対象のブランチをマージする
-        # ここではproductをmainにマージする
-        # if: ${{steps.open-pr-main.outputs.target-pr-url != ''}}
-        # if: ${{steps.outputs.target-pr-url != ''}}
+      #####################################
+      # Merge pr into main from action    #
+      #####################################
+      - name: Merge pr into main from action
         run: |
           echo ${{steps.outputs.target-pr-url != ''}}
           echo ${{steps.open-pr-main.outputs.target-pr-url != ''}}
           gh pr merge ${{steps.open-pr-main.outputs.target-pr-url}} -m --admin
 
-# S3にプッシュするコードを書く
+      #################################################
+      # Copy json to S3 from versioning repository    #
+      #################################################
+      # - name: Copy json to S3 from versioning repository
+      #   uses: opspresso/action-s3-sync@master
+      #   env:
+      #     AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+      #     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+      #     AWS_REGION: ap-northeast-1
+      #     FROM_PATH: "./frontVersioning.json"
+      #     DEST_PATH: "s3://product-front-front-app-version/frontVersioning.json"
+      #     OPTIONS: "--acl public-read"
+
+      ################################
+      # Clear cache in CloudFront    #
+      ################################
+      # - name: Clear cache in CloudFront
+      #   uses: chetan/invalidate-cloudfront-action@v1.2
+      #   env:
+      #     DISTRIBUTION: ${{ secrets.PRODUCT_DISTRIBUTION }}
+      #     PATHS: "/*"
+      #     AWS_REGION: ap-northeast-1
+      #     AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+      #     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+
+      #########################
+      # slack notification    #
+      #########################
+      # - name: Success notifiaction
+      #   uses: rtcamp/action-slack-notify@v2.0.0
+      #   env:
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      #     SLACK_COLOR: good
+      #     SLACK_TITLE: "!!! Front gn2 crm reversion json update success  !!!"
+      #     SLACK_MESSAGE: |
+      #       :white_check_mark: gn2 front crm reversion json update success
+      # - name: Failure notification
+      #   if: failure()
+      #   uses: rtcamp/action-slack-notify@v2.0.0
+      #   env:
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      #     SLACK_COLOR: danger
+      #     SLACK_TITLE: "!!! Front gn2 crm reversion json update Failed !!!"
+      #     SLACK_MESSAGE: |
+      #       :skull_and_crossbones: gn2 front crm reversion json update failed
