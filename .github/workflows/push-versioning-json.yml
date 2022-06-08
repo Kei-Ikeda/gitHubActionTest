@@ -1,0 +1,38 @@
+name: push-versioning-json
+on:
+  workflow_dispatch:
+
+jobs:
+  gn2-front-build-and-s3-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      # REACT_APP_CURR_ENV: production
+      # PG_USER_EMAIL: server@inter-zone.jp
+      # PG_USER_NAME: gnote-github
+      # PG_USER_SECRET: ${{ secrets.PG_USER_SECRET }}
+      # REPO: ${{ github.repository }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: action
+
+      - name: Get current date time
+        id: get_current_date_time
+        run: |
+          current_date_time=$(TZ=UTC-9 date '+%Y/%m/%dT%H:%M:%S')
+          echo "::set-output name=current_date_time::$current_date_time"
+
+      - name: Create config file
+        run: |
+          echo -e "{}" >> ./frontVersioning.json
+
+      - name: Update updatedAt frontVersioning.json
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: ./frontVersioning.json
+          field: updatedAt
+          value:  ${{ steps.get_current_date_time.outputs.current_date_time }}
