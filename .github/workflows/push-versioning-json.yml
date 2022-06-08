@@ -28,7 +28,7 @@ jobs:
 
       - name: Create config file
         run: |
-          echo -e "{}" >> ./frontVersioning.json
+          echo -e "{}" > ./frontVersioning.json
 
       - name: Update updatedAt frontVersioning.json
         uses: jossef/action-set-json-field@v1
@@ -42,7 +42,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git commit -m "Add csv" -a
+          git commit -m "update json" -a
           git push origin HEAD
 
       - name: create pr into main from product
