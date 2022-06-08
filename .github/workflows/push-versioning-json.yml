@@ -39,6 +39,8 @@ jobs:
 
       - name: Commit files
         run: |
+          git config --local user.email "メールアドレスをここに入力"
+          git config --local user.name "Githubのアカウントをここに入力"
           git add .
           git commit -m "Add csv" -a
           git push origin HEAD
