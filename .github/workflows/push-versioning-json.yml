@@ -70,3 +70,5 @@ jobs:
           echo ${{steps.outputs.target-pr-url != ''}}
           echo ${{steps.open-pr-main.outputs.target-pr-url != ''}}
           gh pr merge ${{steps.open-pr-main.outputs.target-pr-url}} -m --admin
+
+# S3にプッシュするコードを書く
