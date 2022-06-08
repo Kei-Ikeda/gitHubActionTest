@@ -30,6 +30,15 @@ jobs:
           echo "::set-output name=current_date_time::$current_date_time"
 
       ######################
+      # Pull main branch   #
+      ######################
+      - name: Pull main branch
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git pull origin main
+
+      ######################
       #  Clear json file   #
       ######################
       - name: Clear json file
