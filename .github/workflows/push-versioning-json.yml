@@ -38,7 +38,7 @@ jobs:
         uses: jossef/action-set-json-field@v1
         with:
           file: ./version.json
-          field: payload.updatedDate
+          field: payload.data.updatedDate
           value: ${{ steps.get_current_date_time.outputs.current_date_time }}
 
       - name: Commit files
