@@ -32,6 +32,7 @@ jobs:
       - name: Clear json file
         run: |
           echo -e "{"status":"Ok","payload":{"data":{"updateDate":0}}}" > ./version.json
+          cat version.json
 
       - name: add Status for version.json
         uses: jossef/action-set-json-field@v1
