@@ -31,7 +31,7 @@ jobs:
 
       - name: Clear json file
         run: |
-          echo -e '{"status":"Ok","payload":{"data":{"updateDate":0}}}' > ./version.json
+          echo -e '{"status":"Ok","payload":{"data":{"updatedDate":0}}}' > ./version.json
           cat version.json
 
       - name: add Status for version.json
