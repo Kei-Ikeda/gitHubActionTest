@@ -39,6 +39,7 @@ jobs:
           file: ./version.json
           field: payload.updatedDate
           value: ${{ steps.get_current_date_time.outputs.current_date_time }}
+        uses: jossef/action-set-json-field@v1
         with:
           file: ./version.json
           field: status
