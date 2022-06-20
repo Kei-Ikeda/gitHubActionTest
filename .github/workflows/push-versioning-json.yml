@@ -31,19 +31,14 @@ jobs:
 
       - name: Clear json file
         run: |
-          echo -e "{}" > ./version.json
+          echo -e "{"status":"Ok","payload":{"data":{"updateDate":0}}}" > ./version.json
 
-      - name: Update updatedDate version.json
+      - name: add Status for version.json
         uses: jossef/action-set-json-field@v1
         with:
           file: ./version.json
           field: payload.updatedDate
           value: ${{ steps.get_current_date_time.outputs.current_date_time }}
-        uses: jossef/action-set-json-field@v1
-        with:
-          file: ./version.json
-          field: status
-          value: 'Ok'
 
       - name: Commit files
         run: |
