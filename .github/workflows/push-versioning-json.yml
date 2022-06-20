@@ -31,14 +31,14 @@ jobs:
 
       - name: Clear json file
         run: |
-          echo -e "{}" > ./frontVersioning.json
+          echo -e "{status:'Ok',payload{resultCount:1}}" > ./version.json
 
-      - name: Update updatedAt frontVersioning.json
+      - name: Update updatedDate version.json
         uses: jossef/action-set-json-field@v1
         with:
-          file: ./frontVersioning.json
-          field: updatedAt
-          value:  ${{ steps.get_current_date_time.outputs.current_date_time }}
+          file: ./version.json
+          field: payload.updatedDate
+          value: ${{ steps.get_current_date_time.outputs.current_date_time }}
 
       - name: Commit files
         run: |
@@ -67,8 +67,8 @@ jobs:
       #     AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
       #     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
       #     AWS_REGION: ap-northeast-1
-      #     FROM_PATH: "./frontVersioning.json"
-      #     DEST_PATH: "s3://product-front-front-app-version/frontVersioning.json"
+      #     FROM_PATH: "./version.json"
+      #     DEST_PATH: "s3://product-front-front-app-version/version.json"
       #     OPTIONS: "--acl public-read"
 
       # - name: Clear cache in CloudFront
