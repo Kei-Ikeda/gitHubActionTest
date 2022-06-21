@@ -1,4 +1,4 @@
-name: push-versioning-json
+name: update-version-json
 on:
   workflow_dispatch:
 
